@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import QMainWindow
 from PyQt5 import QtCore
 
 import AppLoop
-import FactoryController
+from FactoryController import FactoryController
 import Models
 import SignalMng
 import Store
@@ -24,6 +24,9 @@ class UIMainViewControl(QMainWindow):
 
     curr_factory_control = None  # TODO type annotations
 
+    def cfc(self) -> FactoryController:
+        return self.curr_factory_control
+
     def __init__(self, parent=None):
         QMainWindow.__init__(self, parent)
         self.content = Ui_MainWindow()
@@ -40,8 +43,8 @@ class UIMainViewControl(QMainWindow):
         SignalMng.TICK += self.on_tick
 
     def change_fact_enabled(self, v):
-        if self.curr_factory_control is not None:
-            self.curr_factory_control.change_enabled(self.content.cbx_enable.isChecked())
+        if self.cfc() is not None:
+            self.cfc().change_enabled(self.content.cbx_enable.isChecked())
 
     def __exit__(self, exc_type, exc_value, traceback):
         SignalMng.TICK -= self.on_tick
@@ -95,6 +98,6 @@ class UIMainViewControl(QMainWindow):
     def update_current_progress_bar(self):
         if self.curr_factory is None:
             return
-        curr, min, max = self.curr_factory_control.get_progress()
+        curr, min, max = self.cfc().get_progress()
         self.content.bar_current.setValue(curr)
         self.content.bar_current.setMaximum(max)

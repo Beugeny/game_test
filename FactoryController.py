@@ -62,7 +62,7 @@ class FactoryController:
             SignalMng.FACTORY_COLLECTED.dispatch(self.factory.id)
             process_items(self.recipe.out)
 
-    def get_progress(self):
+    def get_progress(self)->tuple:
         if self.factory is None:
             return 0, 0, 0
         else:
@@ -80,73 +80,3 @@ class FactoryController:
                 if self.factory.state == Models.FACTORY_STATE_CURRENT:
                     SignalMng.TICK -= self.on_craft_tick
 
-                    # def state_empty(self):
-                    #     if has_recipe_needs(self.recipe):
-                    #         self.factory.start_time = AppLoop.cur_time
-                    #         self.factory.state = Models.FACTORY_STATE_CURRENT
-                    #         self.locked = True
-                    #         process_items(self.recipe.input, False)
-                    #         self.locked = False
-                    #
-                    #         self.timer.start(AppLoop.cur_time + self.recipe.time - self.factory.start_time)
-                    #         SignalMng.FACTORY_STARTED.dispatch(self.factory.id)
-                    #         self.state_current()
-                    #
-                    # def change_enabled(self, value: bool):
-                    #     if self.factory.enabled == value:
-                    #         return
-                    #     else:
-                    #         self.factory.change_enabled_time = AppLoop.cur_time
-                    #         self.factory.enabled = value
-                    #
-                    # def state_current(self):
-                    #     if self.is_time_complete():
-                    #         self.state_collect()
-                    #
-                    # def is_time_complete(self):
-                    #     AppLoop.cur_time + self.recipe.time <= self.factory.start_time
-                    #
-                    # def get_current_progress(self):
-                    #     if self.factory is None:
-                    #         return 0, 0, 0
-                    #     elif self.factory.state == Models.FACTORY_STATE_EMPTY:
-                    #         return 0, 0, self.recipe.time
-                    #     else:
-                    #         return AppLoop.cur_time, self.curr_factory.start_time, self.curr_factory.start_time + self.recipe.time
-                    #
-                    #
-                    # def state_collect(self):
-                    #     if check_storage_for_recipe(self.recipe):
-                    #         self.locked = True
-                    #         process_items(self.recipe.out)
-                    #         self.locked = False
-                    #         self.factory.state = Models.FACTORY_STATE_EMPTY
-                    #         SignalMng.FACTORY_COLLECTED.dispatch(self.factory.id)
-                    #         self.state_empty()
-                    #
-                    # def on_proccess_item(self, item: Store.ItemPoint):
-                    #     if self.locked is True:
-                    #         return
-                    #     if self.factory.state == Models.FACTORY_STATE_EMPTY:
-                    #         self.state_empty()
-                    #     elif self.factory.state == Models.FACTORY_STATE_WAIT_COLLECT:
-                    #         self.state_collect()
-                    #
-                    # def on_time_complete(self):
-                    #     self.factory.state = Models.FACTORY_STATE_WAIT_COLLECT
-                    #     SignalMng.FACTORY_CRAFT_COMPLETE.dispatch(self.factory.id)
-                    #     self.state_collect()
-                    #
-                    # def destroy(self):
-                    #     if self.timer is not None:
-                    #         self.timer.reset()
-                    #     SignalMng.PROCESS_ITEM -= self.on_proccess_item
-                    #     self.timer -= self.on_time_complete
-                    #
-                    # def start(self):
-                    #     if self.factory.state == Models.FACTORY_STATE_EMPTY:
-                    #         self.state_empty()
-                    #     elif self.factory.state == Models.FACTORY_STATE_CURRENT:
-                    #         self.state_current()
-                    #     elif self.factory.state == Models.FACTORY_STATE_WAIT_COLLECT:
-                    #         self.state_collect()
