@@ -5,6 +5,12 @@ recipes = dict()
 storages = dict()
 facts = dict()
 
+fact_controls = dict()
+
+
+def get_fact_control(id):
+    return get_by_id(id, fact_controls)
+
 
 def get_recipe(id):
     """
@@ -49,5 +55,7 @@ def init():
     storages[1] = StorageModel(1, "Склад материалов", 20)
 
     facts[1] = FactoryModel(1, "Добыча железа", 1)
-    facts[2] = FactoryModel(2, "Добыча угля", 2)
-    facts[3] = FactoryModel(3, "Плавильня", 3)
+    # facts[2] = FactoryModel(2, "Добыча угля", 2)
+    # facts[3] = FactoryModel(3, "Плавильня", 3)
+
+

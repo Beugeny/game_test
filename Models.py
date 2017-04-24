@@ -32,7 +32,9 @@ class FactoryModel:
     id = 0
     name = ""
     recipe = 0
-    start_time = 0
+    start_time = 0  # Время старта крафта
+    progress_time = 0  # Сколько крафтилось выражено в пройденном времени
+    enabled = True
     state = FACTORY_STATE_EMPTY
 
     def __init__(self, id, name, recipe):
