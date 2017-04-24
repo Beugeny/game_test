@@ -1,5 +1,6 @@
 from typing import TypeVar
 
+from PyQt5.QtCore import QItemSelectionModel
 from PyQt5.QtWidgets import QMainWindow
 from PyQt5 import QtCore
 
@@ -32,15 +33,21 @@ class UIMainViewControl(QMainWindow):
         self.content = Ui_MainWindow()
         self.content.setupUi(self)
 
+        self.content.tabs.setCurrentIndex(0)
+        self.content.tabs.currentChanged.connect(self.on_tab_changed)
+
         m = ModelDict(Store.facts)
         self.content.list_facts.setModel(m)
+        self.content.list_facts.selectionModel().currentChanged.connect(self.on_fact_changed)
+        self.content.list_facts.setCurrentIndex(m.index(0, 0))
 
         self.content.bar_current.setMinimum(0)
         self.content.cbx_enable.stateChanged.connect(self.change_fact_enabled)
 
-        self.content.list_facts.selectionModel().currentChanged.connect(self.on_fact_changed)
-
         SignalMng.TICK += self.on_tick
+
+    def on_tab_changed(self):
+        print(self.content.tabs.currentIndex())
 
     def change_fact_enabled(self, v):
         if self.cfc() is not None:
