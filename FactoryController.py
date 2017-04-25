@@ -46,6 +46,7 @@ class FactoryController:
             self.try_to_collect()
 
     def stop_craft(self):
+        self.factory.state = Models.FACTORY_STATE_WAIT_COLLECT
         SignalMng.TICK -= self.on_craft_tick
         SignalMng.FACTORY_CRAFT_COMPLETE.dispatch(self.factory.id)
 
@@ -74,8 +75,7 @@ class FactoryController:
         else:
             self.factory.enabled = value
             if self.factory.enabled is True:
-                if self.factory.state == Models.FACTORY_STATE_CURRENT:
-                    SignalMng.TICK += self.on_craft_tick
+                self.start()
             else:
                 if self.factory.state == Models.FACTORY_STATE_CURRENT:
                     SignalMng.TICK -= self.on_craft_tick
