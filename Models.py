@@ -1,6 +1,9 @@
+from typing import List
+
 from nltk.sem.logic import typecheck
 
 import SignalMng
+import Store
 
 
 class RecipeModel:
@@ -51,6 +54,11 @@ class FactoryModel:
 
 
 class StorageModel:
+    id = 0
+    name = ""
+    max_count = 0
+    items = dict()
+
     def __init__(self, id, name, max_count, items=None):
         super().__init__()
         if items is not None:
@@ -61,11 +69,6 @@ class StorageModel:
 
     def current_count(self):
         return sum([x for x in self.items.values()]) if self.items is not None else 0
-
-    id = 0
-    name = ""
-    max_count = 0
-    items = dict()
 
     def __str__(self, *args, **kwargs):
         return "StorageModel:: id={0} name={1} count={2}/{3}".format(self.id, self.name, self.current_count(),
@@ -79,7 +82,10 @@ class StorageModel:
             return self.items[id]
         return 0
 
-    def append_item(self, item, positive):
+    def get_item_points(self) -> List['ItemPoint']:
+        return [ItemPoint(id, count) for id, count in self.items.items()]
+
+    def append_item(self, item: 'ItemPoint', positive):
         if item.count == 0:
             return
 
@@ -96,6 +102,11 @@ class StorageModel:
         if self.items[item.id] < 0:
             raise Exception("Storage item count<0")
         SignalMng.PROCESS_ITEM.dispatch(item)
+
+    def is_storage_item(self, id):
+        if id in self.items:
+            return True
+        return False
 
 
 class ItemModel:

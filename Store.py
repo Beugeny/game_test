@@ -49,7 +49,7 @@ def init():
     items[3] = ItemModel(3, "Сталь", 1)
 
     recipes[1] = RecipeModel(1, 1000, [ItemPoint(1, 1)])
-    recipes[2] = RecipeModel(2, 2000, [ItemPoint(2, 1)])
+    recipes[2] = RecipeModel(2, 500, [ItemPoint(2, 1)])
     recipes[3] = RecipeModel(3, 1500, [ItemPoint(3, 1)], [ItemPoint(1, 1), ItemPoint(2, 1)])
 
     storages[1] = StorageModel(1, "Склад материалов", 20)

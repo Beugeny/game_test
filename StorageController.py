@@ -13,7 +13,7 @@ def has_recipe_needs(recipe):
     return all([has_item(x) for x in recipe.input])
 
 
-def process_item(item, positive):
+def process_item(item: 'ItemPoint', positive):
     model = Store.get_item(item.id)
     storage = Store.get_storage(model.storage)
     storage.append_item(item, positive)
