@@ -19,6 +19,13 @@ def get_item_label(item: Store.ItemPoint):
     return ""
 
 
+def get_item_label_with_cost(item: Store.ItemPoint):
+    m = Store.get_item(item.id)
+    if m:
+        return "{0} {1}шт. ={2} монет".format(m.name, item.count,m.cost*item.count)
+    return ""
+
+
 class UIMainViewControl(QMainWindow):
     curr_factory = None
     curr_factory_control = None
@@ -109,7 +116,7 @@ class UIMainViewControl(QMainWindow):
 
     def update_storage_view(self):
         self.content.txt_storage_name.setText(self.get_storage().name)
-        m = ModelList(self.get_storage().get_item_points(), label_field=get_item_label)
+        m = ModelList(self.get_storage().get_item_points(), label_field=get_item_label_with_cost)
         self.content.list_storage_elements.setModel(m)
 
         self.update_storage_capacity()
