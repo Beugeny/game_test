@@ -1,9 +1,22 @@
 from typing import List
-
-from nltk.sem.logic import typecheck
-
 import SignalMng
-import Store
+
+
+class PlayerResources:
+    def __init__(self, start_coins=0):
+        super().__init__()
+        self._coins = start_coins
+
+    @property
+    def coins(self)->int:
+        return self._coins
+
+    @coins.setter
+    def coins(self, value:int):
+        if self._coins == value:
+            return
+        self._coins = value
+        SignalMng.COINS_CHANGED.dispatch()
 
 
 class RecipeModel:
@@ -59,6 +72,8 @@ class StorageModel:
     max_count = 0
     items = dict()
 
+    item_points = None
+
     def __init__(self, id, name, max_count, items=None):
         super().__init__()
         if items is not None:
@@ -66,6 +81,12 @@ class StorageModel:
         self.max_count = max_count
         self.name = name
         self.id = id
+        self.item_points = [ItemPoint(id, count) for id, count in self.items.items()]
+
+    def get_item(self, id: int) -> 'ItemPoint':
+        for item in self.item_points:
+            if item.id == id:
+                return item
 
     def current_count(self):
         return sum([x for x in self.items.values()]) if self.items is not None else 0
@@ -83,7 +104,7 @@ class StorageModel:
         return 0
 
     def get_item_points(self) -> List['ItemPoint']:
-        return [ItemPoint(id, count) for id, count in self.items.items()]
+        return self.item_points
 
     def append_item(self, item: 'ItemPoint', positive):
         if item.count == 0:
@@ -92,15 +113,20 @@ class StorageModel:
         if item.id in self.items:
             if positive is True:
                 self.items[item.id] += item.count
+                self.get_item(item.id).count += item.count
             else:
                 self.items[item.id] -= item.count
+                self.get_item(item.id).count -= item.count
         else:
             if positive is True:
                 self.items[item.id] = item.count
+                self.item_points.append(ItemPoint(item.id, item.count))
             else:
                 self.items[item.id] = -item.count
+                self.item_points.append(ItemPoint(item.id, -item.count))
         if self.items[item.id] < 0:
             raise Exception("Storage item count<0")
+
         SignalMng.PROCESS_ITEM.dispatch(item)
 
     def is_storage_item(self, id):
@@ -110,15 +136,17 @@ class StorageModel:
 
 
 class ItemModel:
-    def __init__(self, id, name, storage):
+    def __init__(self, id, name, storage, cost):
         super().__init__()
         self.storage = storage
         self.name = name
         self.id = id
+        self.cost = cost
 
     id = 0
     name = ""
     storage = 0
+    cost = 0
 
     def __str__(self, *args, **kwargs):
         return "ItemModel:: id={0} name={1}".format(self.id, self.name)

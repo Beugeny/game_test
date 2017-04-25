@@ -14,7 +14,19 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QHBoxLayout" name="horizontalLayout">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QLabel" name="txt_player_coins">
+      <property name="font">
+       <font>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Ресурсов игрока: 9000</string>
+      </property>
+     </widget>
+    </item>
     <item>
      <widget class="QTabWidget" name="tabs">
       <property name="currentIndex">
@@ -182,6 +194,30 @@
           <property name="sizeConstraint">
            <enum>QLayout::SetDefaultConstraint</enum>
           </property>
+          <item row="5" column="1">
+           <widget class="QPushButton" name="btn_sell_10">
+            <property name="text">
+             <string>Продать 10 шт</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="label_9">
+            <property name="text">
+             <string>Элементы на складе</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_4">
+            <property name="text">
+             <string>Вместимость склада</string>
+            </property>
+           </widget>
+          </item>
           <item row="0" column="0">
            <widget class="QLabel" name="label_3">
             <property name="font">
@@ -208,12 +244,8 @@
             </property>
            </widget>
           </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="label_4">
-            <property name="text">
-             <string>Вместимость склада</string>
-            </property>
-           </widget>
+          <item row="3" column="1">
+           <widget class="QListView" name="list_storage_elements"/>
           </item>
           <item row="1" column="1">
            <widget class="QLabel" name="txt_storage_capacity">
@@ -227,23 +259,24 @@
             </property>
            </widget>
           </item>
-          <item row="3" column="0">
-           <widget class="QLabel" name="label_9">
-            <property name="text">
-             <string>Элементы на складе</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="1">
-           <widget class="QListView" name="list_storage_elements"/>
-          </item>
           <item row="2" column="1">
            <widget class="QProgressBar" name="bar_storage_capacity">
             <property name="value">
              <number>24</number>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="QPushButton" name="btn_sell_1">
+            <property name="text">
+             <string>Продать 1 шт</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="1">
+           <widget class="QPushButton" name="btn_sell_all">
+            <property name="text">
+             <string>Продать все</string>
             </property>
            </widget>
           </item>

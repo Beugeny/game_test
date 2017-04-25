@@ -1,3 +1,5 @@
+from functools import partial
+
 from PyQt5 import QtCore
 from PyQt5.QtWidgets import QMainWindow
 
@@ -50,13 +52,33 @@ class UIMainViewControl(QMainWindow):
         self.content.list_storages.selectionModel().currentChanged.connect(self.on_storage_changed)
         self.content.list_storages.setCurrentIndex(m.index(0, 0))
 
+        self.content.btn_sell_1.clicked.connect(partial(self.on_sell_clicked, 1))
+        self.content.btn_sell_10.clicked.connect(partial(self.on_sell_clicked, 10))
+        self.content.btn_sell_all.clicked.connect(partial(self.on_sell_clicked, -1))
+
+        self.on_coins_changed()
+
         SignalMng.TICK += self.on_tick
         SignalMng.PROCESS_ITEM += self.on_proccess_item
+        SignalMng.COINS_CHANGED += self.on_coins_changed
+
+    def on_sell_clicked(self, count):
+        l = self.content.list_storage_elements
+        indexes = l.selectedIndexes()
+
+        items = [l.model().data(index, QtCore.Qt.UserRole) for index in indexes]
+        if count < 0:
+            [StorageController.sell_item(item.id, item.count) for item in items]
+        else:
+            [StorageController.sell_item(item.id, count) for item in items]
+
+    def on_coins_changed(self):
+        self.content.txt_player_coins.setText("Ресурсов игрока {0}".format(Store.playerResources.coins))
 
     def on_proccess_item(self, item: Models.ItemPoint):
         if self.content.tabs.currentIndex() == 1:
             if self.get_storage() and self.get_storage().is_storage_item(item.id):
-                self.update_storage_view()
+                self.update_storage_capacity()
 
     def on_tab_changed(self):
         if self.content.tabs.currentIndex() == 0:
@@ -86,20 +108,17 @@ class UIMainViewControl(QMainWindow):
         self.update_storage_view()
 
     def update_storage_view(self):
-        if self.curr_storage is None:
-            self.content.txt_storage_name.setText("")
-            self.content.txt_storage_capacity.setText("")
-            self.content.bar_storage_capacity.setMaximum(0)
-            self.content.bar_storage_capacity.setValue(0)
-        else:
-            self.content.txt_storage_name.setText(self.get_storage().name)
-            self.content.txt_storage_capacity.setText(
-                "{0}/{1}".format(self.get_storage().current_count(), self.get_storage().max_count))
-            self.content.bar_storage_capacity.setMaximum(self.get_storage().max_count)
-            self.content.bar_storage_capacity.setValue(self.get_storage().current_count())
+        self.content.txt_storage_name.setText(self.get_storage().name)
+        m = ModelList(self.get_storage().get_item_points(), label_field=get_item_label)
+        self.content.list_storage_elements.setModel(m)
 
-            m = ModelList(self.get_storage().get_item_points(), label_field=get_item_label)
-            self.content.list_storage_elements.setModel(m)
+        self.update_storage_capacity()
+
+    def update_storage_capacity(self):
+        self.content.txt_storage_capacity.setText(
+            "{0}/{1}".format(self.get_storage().current_count(), self.get_storage().max_count))
+        self.content.bar_storage_capacity.setMaximum(self.get_storage().max_count)
+        self.content.bar_storage_capacity.setValue(self.get_storage().current_count())
 
     def update_factory_view(self):
         if self.curr_factory is None:

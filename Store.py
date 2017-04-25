@@ -1,9 +1,11 @@
+import Models
 from Models import *
 
 items = dict()
 recipes = dict()
 storages = dict()
 facts = dict()
+playerResources=Models.PlayerResources()
 
 fact_controls = dict()
 
@@ -44,9 +46,9 @@ def init():
     global storages
     global facts
 
-    items[1] = ItemModel(1, "Железо", 1)
-    items[2] = ItemModel(2, "Уголь", 1)
-    items[3] = ItemModel(3, "Сталь", 1)
+    items[1] = ItemModel(1, "Железо", 1, 2)
+    items[2] = ItemModel(2, "Уголь", 1, 1)
+    items[3] = ItemModel(3, "Сталь", 1, 6)
 
     recipes[1] = RecipeModel(1, 1000, [ItemPoint(1, 1)])
     recipes[2] = RecipeModel(2, 500, [ItemPoint(2, 1)])
@@ -57,5 +59,3 @@ def init():
     facts[1] = FactoryModel(1, "Добыча железа", 1)
     facts[2] = FactoryModel(2, "Добыча угля", 2)
     facts[3] = FactoryModel(3, "Плавильня", 3)
-
-
