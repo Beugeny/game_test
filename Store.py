@@ -1,11 +1,12 @@
 import Models
 from Models import *
+import numpy as np
 
 items = dict()
 recipes = dict()
 storages = dict()
 facts = dict()
-playerResources=Models.PlayerResources()
+playerResources = Models.PlayerResources()
 
 fact_controls = dict()
 
@@ -56,6 +57,13 @@ def init():
 
     storages[1] = StorageModel(1, "Склад материалов", 20)
 
-    facts[1] = FactoryModel(1, "Добыча железа", 1)
-    facts[2] = FactoryModel(2, "Добыча угля", 2)
-    facts[3] = FactoryModel(3, "Плавильня", 3)
+    upg_values = list(np.arange(0.01, 1, 0.02))
+    upg_values = list(reversed(upg_values))
+    upg_cost = [int(x ** 1.2) for x in np.arange(1, len(upg_values))]
+    fact_upgrades = []
+    for index in enumerate(upg_cost):
+        fact_upgrades.append(FactoryUpgrade(upg_values[index[0]], upg_cost[index[0]]))
+
+    facts[1] = FactoryModel(1, "Добыча железа", 1, fact_upgrades)
+    facts[2] = FactoryModel(2, "Добыча угля", 2, fact_upgrades)
+    facts[3] = FactoryModel(3, "Плавильня", 3, fact_upgrades)

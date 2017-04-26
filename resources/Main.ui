@@ -48,7 +48,27 @@
          </widget>
         </item>
         <item>
-         <layout class="QFormLayout" name="formLayout">
+         <layout class="QGridLayout" name="gridLayout_2">
+          <item row="11" column="1">
+           <spacer name="verticalSpacer_2">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="2" column="1">
+           <widget class="QProgressBar" name="bar_current">
+            <property name="value">
+             <number>24</number>
+            </property>
+           </widget>
+          </item>
           <item row="0" column="0">
            <widget class="QLabel" name="label">
             <property name="font">
@@ -58,6 +78,23 @@
             </property>
             <property name="text">
              <string>Название</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="QListView" name="list_out">
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>100</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="0">
+           <widget class="QLabel" name="label_10">
+            <property name="text">
+             <string>Состояние</string>
             </property>
            </widget>
           </item>
@@ -72,6 +109,85 @@
             </property>
             <property name="text">
              <string>Шахта</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QListView" name="list_in">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>100</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="1">
+           <widget class="QLabel" name="txt_energy">
+            <property name="text">
+             <string>100</string>
+            </property>
+           </widget>
+          </item>
+          <item row="10" column="1">
+           <widget class="QLabel" name="txt_fact_next">
+            <property name="text">
+             <string>Время производства -2%</string>
+            </property>
+           </widget>
+          </item>
+          <item row="9" column="1">
+           <widget class="QPushButton" name="btn_factory_upgrade">
+            <property name="text">
+             <string>Улучшить 4000</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QLabel" name="label_6">
+            <property name="text">
+             <string>Что требуется</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="0">
+           <widget class="QLabel" name="label_7">
+            <property name="text">
+             <string>Статус</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="label_12">
+            <property name="text">
+             <string>Производство</string>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="0">
+           <widget class="QLabel" name="label_8">
+            <property name="text">
+             <string>Потребение энергии</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="label_5">
+            <property name="text">
+             <string>Что производит</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="1">
+           <widget class="QCheckBox" name="cbx_enable">
+            <property name="text">
+             <string>Включено</string>
             </property>
            </widget>
           </item>
@@ -94,58 +210,10 @@
             </property>
            </widget>
           </item>
-          <item row="3" column="0">
-           <widget class="QLabel" name="label_5">
+          <item row="10" column="0">
+           <widget class="QLabel" name="label_11">
             <property name="text">
-             <string>Что производит</string>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="1">
-           <widget class="QListView" name="list_in"/>
-          </item>
-          <item row="4" column="0">
-           <widget class="QLabel" name="label_6">
-            <property name="text">
-             <string>Что требуется</string>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="1">
-           <widget class="QListView" name="list_out"/>
-          </item>
-          <item row="5" column="0">
-           <widget class="QLabel" name="label_7">
-            <property name="text">
-             <string>Статус</string>
-            </property>
-           </widget>
-          </item>
-          <item row="5" column="1">
-           <widget class="QCheckBox" name="cbx_enable">
-            <property name="text">
-             <string>Включено</string>
-            </property>
-           </widget>
-          </item>
-          <item row="6" column="0">
-           <widget class="QLabel" name="label_10">
-            <property name="text">
-             <string>Состояние</string>
-            </property>
-           </widget>
-          </item>
-          <item row="7" column="0">
-           <widget class="QLabel" name="label_8">
-            <property name="text">
-             <string>Потребение энергии</string>
-            </property>
-           </widget>
-          </item>
-          <item row="7" column="1">
-           <widget class="QLabel" name="txt_energy">
-            <property name="text">
-             <string>100</string>
+             <string>Следующий уровень</string>
             </property>
            </widget>
           </item>
@@ -156,17 +224,17 @@
             </property>
            </widget>
           </item>
-          <item row="2" column="0">
-           <widget class="QLabel" name="label_12">
-            <property name="text">
-             <string>Производство</string>
+          <item row="8" column="0">
+           <widget class="Line" name="line">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
             </property>
            </widget>
           </item>
-          <item row="2" column="1">
-           <widget class="QProgressBar" name="bar_current">
-            <property name="value">
-             <number>24</number>
+          <item row="8" column="1">
+           <widget class="Line" name="line_2">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
             </property>
            </widget>
           </item>
@@ -194,6 +262,33 @@
           <property name="sizeConstraint">
            <enum>QLayout::SetDefaultConstraint</enum>
           </property>
+          <item row="8" column="1">
+           <widget class="QPushButton" name="btn_storage_upgrade">
+            <property name="text">
+             <string>Улучшить склад</string>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="1">
+           <widget class="Line" name="line_3">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="10" column="1">
+           <spacer name="verticalSpacer">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
           <item row="5" column="1">
            <widget class="QPushButton" name="btn_sell_10">
             <property name="text">
@@ -244,8 +339,19 @@
             </property>
            </widget>
           </item>
-          <item row="3" column="1">
-           <widget class="QListView" name="list_storage_elements"/>
+          <item row="6" column="1">
+           <widget class="QPushButton" name="btn_sell_all">
+            <property name="text">
+             <string>Продать все</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QProgressBar" name="bar_storage_capacity">
+            <property name="value">
+             <number>24</number>
+            </property>
+           </widget>
           </item>
           <item row="1" column="1">
            <widget class="QLabel" name="txt_storage_capacity">
@@ -259,12 +365,8 @@
             </property>
            </widget>
           </item>
-          <item row="2" column="1">
-           <widget class="QProgressBar" name="bar_storage_capacity">
-            <property name="value">
-             <number>24</number>
-            </property>
-           </widget>
+          <item row="3" column="1">
+           <widget class="QListView" name="list_storage_elements"/>
           </item>
           <item row="4" column="1">
            <widget class="QPushButton" name="btn_sell_1">
@@ -273,10 +375,24 @@
             </property>
            </widget>
           </item>
-          <item row="6" column="1">
-           <widget class="QPushButton" name="btn_sell_all">
+          <item row="7" column="0">
+           <widget class="Line" name="line_4">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="9" column="1">
+           <widget class="QLabel" name="txt_storage_next">
             <property name="text">
-             <string>Продать все</string>
+             <string>Вместимость +5</string>
+            </property>
+           </widget>
+          </item>
+          <item row="9" column="0">
+           <widget class="QLabel" name="label_15">
+            <property name="text">
+             <string>Следующий уровень</string>
             </property>
            </widget>
           </item>

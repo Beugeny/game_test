@@ -1,5 +1,6 @@
 from typing import List
 import SignalMng
+import Store
 
 
 class PlayerResources:
@@ -8,11 +9,11 @@ class PlayerResources:
         self._coins = start_coins
 
     @property
-    def coins(self)->int:
+    def coins(self) -> int:
         return self._coins
 
     @coins.setter
-    def coins(self, value:int):
+    def coins(self, value: int):
         if self._coins == value:
             return
         self._coins = value
@@ -53,17 +54,45 @@ class FactoryModel:
     enabled = True
     state = FACTORY_STATE_EMPTY
 
-    def __init__(self, id, name, recipe):
+    def __init__(self, id, name, recipe, upgrades: List['FactoryUpgrade']):
         super().__init__()
         self.recipe = recipe
         self.name = name
         self.id = id
+        self.recipe_model = Store.get_recipe(self.recipe)
+        self.upgrades = upgrades
+        self.current_upgrade_index = 0
 
     def __str__(self, *args, **kwargs):
         return "FactoryModel:: id={0} name={1} recipe={2}".format(self.id, self.name, self.recipe)
 
     def __repr__(self, *args, **kwargs):
         return self.__str__(*args, **kwargs)
+
+    def get_recipe_time(self):
+        return self.upgrades[self.current_upgrade_index].time_k * self.recipe_model.time
+
+    def get_next_recipe_time(self):
+        return self.upgrades[self.current_upgrade_index + 1].time_k * self.recipe_model.time
+
+    def get_next_delta_time(self):
+        return self.get_next_recipe_time() - self.get_recipe_time()
+
+    def upg_cost(self):
+        return self.upgrades[self.current_upgrade_index].cost
+
+    def next_upg_cost(self):
+        return self.upgrades[self.current_upgrade_index].cost
+
+
+class FactoryUpgrade:
+    time_k = 1
+    cost = 0
+
+    def __init__(self, k: int, cost: int):
+        super().__init__()
+        self.time_k = k
+        self.cost = cost
 
 
 class StorageModel:

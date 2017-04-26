@@ -40,8 +40,8 @@ class FactoryController:
 
     def on_craft_tick(self, delta_time):
         self.factory.progress_time += delta_time
-        if self.factory.progress_time >= self.recipe.time:
-            self.factory.progress_time = self.recipe.time
+        if self.factory.progress_time >= self.factory.get_recipe_time():
+            self.factory.progress_time = self.factory.get_recipe_time()
             self.stop_craft()
             self.try_to_collect()
 
@@ -67,7 +67,7 @@ class FactoryController:
         if self.factory is None:
             return 0, 0, 0
         else:
-            return self.factory.progress_time, 0, self.recipe.time
+            return self.factory.progress_time, 0, self.factory.get_recipe_time()
 
     def change_enabled(self, value: bool):
         if self.factory.enabled == value:

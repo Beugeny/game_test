@@ -22,7 +22,7 @@ def get_item_label(item: Store.ItemPoint):
 def get_item_label_with_cost(item: Store.ItemPoint):
     m = Store.get_item(item.id)
     if m:
-        return "{0} {1}шт. ={2} монет".format(m.name, item.count,m.cost*item.count)
+        return "{0} {1}шт. ={2} монет".format(m.name, item.count, m.cost * item.count)
     return ""
 
 
@@ -37,6 +37,9 @@ class UIMainViewControl(QMainWindow):
     def get_storage(self) -> Models.StorageModel:
         return self.curr_storage
 
+    def get_fact(self) -> Models.FactoryModel:
+        return self.curr_factory
+
     def __init__(self, parent=None):
         QMainWindow.__init__(self, parent)
 
@@ -45,6 +48,8 @@ class UIMainViewControl(QMainWindow):
 
         self.content.tabs.setCurrentIndex(0)
         self.content.tabs.currentChanged.connect(self.on_tab_changed)
+
+        self.content.btn_factory_upgrade.clicked.connect(self.upg_fact)
 
         m = ModelDict(Store.facts)
         self.content.list_facts.setModel(m)
@@ -68,6 +73,18 @@ class UIMainViewControl(QMainWindow):
         SignalMng.TICK += self.on_tick
         SignalMng.PROCESS_ITEM += self.on_proccess_item
         SignalMng.COINS_CHANGED += self.on_coins_changed
+
+    def upg_fact(self):
+        if Store.playerResources.coins >= self.get_fact().upg_cost():
+            Store.playerResources.coins -= self.get_fact().upg_cost()
+            self.get_fact().current_upgrade_index += 1
+            self.update_factory_view()
+
+    def update_fact_upgrade(self):
+        d = self.get_fact().get_next_delta_time() / self.get_fact().get_recipe_time() * 100
+        self.content.txt_fact_next.setText("Время производства {0}%".format(round(d, 2)))
+
+        self.content.btn_factory_upgrade.setText("Улучшить {0} монет".format(self.get_fact().next_upg_cost()))
 
     def on_sell_clicked(self, count):
         l = self.content.list_storage_elements
@@ -128,17 +145,13 @@ class UIMainViewControl(QMainWindow):
         self.content.bar_storage_capacity.setValue(self.get_storage().current_count())
 
     def update_factory_view(self):
-        if self.curr_factory is None:
-            self.content.txt_name.setText("")
-            self.content.txt_per_sec.setText("")
-        else:
-            recipe = Store.get_recipe(self.curr_factory.recipe)
-            self.content.txt_name.setText(self.curr_factory.name)
-            self.content.txt_per_sec.setText(str(round((1 / recipe.time) * 1000, 2)))
+        self.content.txt_name.setText(self.curr_factory.name)
+        self.content.txt_per_sec.setText(str(round((1 / self.curr_factory.get_recipe_time()) * 1000, 2)))
 
         self.update_current_progress_bar()
         self.update_current_recipe()
         self.update_enabled()
+        self.update_fact_upgrade()
 
     def update_enabled(self):
         self.content.cbx_enable.setChecked(self.curr_factory.enabled)
