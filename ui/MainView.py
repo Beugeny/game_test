@@ -15,14 +15,12 @@ def my_exception_hook(exctype, value, traceback):
 def show_main():
     app = QtWidgets.QApplication(sys.argv)
     sys._excepthook = sys.excepthook
-
+    sys.excepthook = my_exception_hook
     AppLoop.start()
 
     app.setStyleSheet(qdarkstyle.load_stylesheet_pyqt5())
 
     w = UIMainViewControl()
     w.show()
-
-    sys.excepthook = my_exception_hook
 
     sys.exit(app.exec_())

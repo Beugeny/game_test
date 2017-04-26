@@ -50,6 +50,7 @@ class UIMainViewControl(QMainWindow):
         self.content.tabs.currentChanged.connect(self.on_tab_changed)
 
         self.content.btn_factory_upgrade.clicked.connect(self.upg_fact)
+        self.content.btn_storage_upgrade.clicked.connect(self.upg_storage)
 
         m = ModelDict(Store.facts)
         self.content.list_facts.setModel(m)
@@ -80,11 +81,21 @@ class UIMainViewControl(QMainWindow):
             self.get_fact().current_upgrade_index += 1
             self.update_factory_view()
 
+    def upg_storage(self):
+        if Store.playerResources.coins >= self.get_storage().upg_cost():
+            Store.playerResources.coins -= self.get_storage().upg_cost()
+            self.get_storage().current_upgrade_index += 1
+            self.update_storage_view()
+
     def update_fact_upgrade(self):
         d = self.get_fact().get_next_delta_time() / self.get_fact().get_recipe_time() * 100
         self.content.txt_fact_next.setText("Время производства {0}%".format(round(d, 2)))
+        self.content.btn_factory_upgrade.setText("Улучшить {0} монет".format(self.get_fact().upg_cost()))
 
-        self.content.btn_factory_upgrade.setText("Улучшить {0} монет".format(self.get_fact().next_upg_cost()))
+    def update_storage_upgrade(self):
+        d = self.get_storage().next_max_count-self.get_storage().max_count
+        self.content.txt_storage_next.setText("Вместимость +{0}".format(d))
+        self.content.btn_storage_upgrade.setText("Улучшить {0} монет".format(self.get_storage().upg_cost()))
 
     def on_sell_clicked(self, count):
         l = self.content.list_storage_elements
@@ -137,6 +148,7 @@ class UIMainViewControl(QMainWindow):
         self.content.list_storage_elements.setModel(m)
 
         self.update_storage_capacity()
+        self.update_storage_upgrade()
 
     def update_storage_capacity(self):
         self.content.txt_storage_capacity.setText(

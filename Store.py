@@ -41,6 +41,25 @@ def get_by_id(id, collection):
         return collection.get(id)
 
 
+def fact_upg_generator():
+    upg_values = list(np.arange(0.01, 1, 0.02))
+    upg_values = list(reversed(upg_values))
+    upg_cost = [int(x ** 1.2) for x in np.arange(1, len(upg_values))]
+    fact_upgrades = []
+    for index in enumerate(upg_cost):
+        fact_upgrades.append(FactoryUpgrade(upg_values[index[0]], upg_cost[index[0]]))
+    return fact_upgrades
+
+
+def stor_upg_generator():
+    upg_values = range(20, 2000, 20)
+    upg_cost = [int(x ** 1.2) for x in np.arange(1, len(upg_values))]
+    upgrades = []
+    for index in enumerate(upg_cost):
+        upgrades.append(StorageUpgrade(upg_values[index[0]], upg_cost[index[0]]))
+    return upgrades
+
+
 def init():
     global items
     global recipes
@@ -55,14 +74,10 @@ def init():
     recipes[2] = RecipeModel(2, 500, [ItemPoint(2, 1)])
     recipes[3] = RecipeModel(3, 1500, [ItemPoint(3, 1)], [ItemPoint(1, 1), ItemPoint(2, 1)])
 
-    storages[1] = StorageModel(1, "Склад материалов", 20)
+    stor_upgrades = stor_upg_generator()
+    storages[1] = StorageModel(1, "Склад материалов", 20, stor_upgrades)
 
-    upg_values = list(np.arange(0.01, 1, 0.02))
-    upg_values = list(reversed(upg_values))
-    upg_cost = [int(x ** 1.2) for x in np.arange(1, len(upg_values))]
-    fact_upgrades = []
-    for index in enumerate(upg_cost):
-        fact_upgrades.append(FactoryUpgrade(upg_values[index[0]], upg_cost[index[0]]))
+    fact_upgrades = fact_upg_generator()
 
     facts[1] = FactoryModel(1, "Добыча железа", 1, fact_upgrades)
     facts[2] = FactoryModel(2, "Добыча угля", 2, fact_upgrades)

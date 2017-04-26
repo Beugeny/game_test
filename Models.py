@@ -81,36 +81,43 @@ class FactoryModel:
     def upg_cost(self):
         return self.upgrades[self.current_upgrade_index].cost
 
-    def next_upg_cost(self):
-        return self.upgrades[self.current_upgrade_index].cost
-
 
 class FactoryUpgrade:
     time_k = 1
     cost = 0
 
-    def __init__(self, k: int, cost: int):
+    def __init__(self, k: float, cost: int):
         super().__init__()
         self.time_k = k
+        self.cost = cost
+
+
+class StorageUpgrade:
+    counts = 1
+    cost = 0
+
+    def __init__(self, counts: int, cost: int):
+        super().__init__()
+        self.counts = counts
         self.cost = cost
 
 
 class StorageModel:
     id = 0
     name = ""
-    max_count = 0
     items = dict()
 
     item_points = None
 
-    def __init__(self, id, name, max_count, items=None):
+    def __init__(self, id, name, max_count, upgrades: List['StorageUpgrade'], items=None):
         super().__init__()
         if items is not None:
             self.items = items
-        self.max_count = max_count
         self.name = name
         self.id = id
         self.item_points = [ItemPoint(id, count) for id, count in self.items.items()]
+        self.upgrades = upgrades
+        self.current_upgrade_index = 0
 
     def get_item(self, id: int) -> 'ItemPoint':
         for item in self.item_points:
@@ -162,6 +169,17 @@ class StorageModel:
         if id in self.items:
             return True
         return False
+
+    @property
+    def max_count(self) -> int:
+        return self.upgrades[self.current_upgrade_index].counts
+
+    @property
+    def next_max_count(self) -> int:
+        return self.upgrades[self.current_upgrade_index + 1].counts
+
+    def upg_cost(self):
+        return self.upgrades[self.current_upgrade_index].cost
 
 
 class ItemModel:
